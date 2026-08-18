@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050505" />
+  <title>暑假研修课程多开工作台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div>
+          <p class="eyebrow">SMART EDU</p>
+          <h1>暑假研修课程多开</h1>
+        </div>
+      </div>
+
+      <div class="sidebar-copy">
+        <p class="section-label">当前课程集</p>
+        <h2 id="course-set-name">正在读取课程…</h2>
+        <p class="muted" id="course-set-meta">准备载入课程清单</p>
+      </div>
+
+      <label class="search-box" for="course-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m21 21-4.35-4.35m2.1-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
+        </svg>
+        <input id="course-search" type="search" placeholder="搜索课程标题" autocomplete="off" />
+        <kbd>/</kbd>
+      </label>
+
+      <div class="list-heading">
+        <span>课程清单</span>
+        <div class="list-actions">
+          <button class="refresh-courses" id="refresh-courses" type="button" aria-label="重新读取课程数据"
+            title="重新读取 course.json">
+            刷新
+          </button>
+          <span class="count-pill" id="visible-count">0</span>
+        </div>
+      </div>
+      <div class="course-list" id="course-list" aria-live="polite">
+        <div class="loading-state"><span class="spinner"></span>载入课程数据</div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="status-dot"><span></span>本地数据已连接</div>
+        <p>从 <code>course.json</code> 自动读取</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">COURSE CONTROL CENTER</p>
+          <h2>并行学习空间</h2>
+        </div>
+        <div class="topbar-actions">
+          <button class="ghost-button" id="open-all-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 5h5v5m-1.25-3.75L12 12m-7 7h14V5H14M5 5h4" />
+            </svg>
+            浏览当前课程
+          </button>
+          <div class="avatar" title="课程工作台">课</div>
+        </div>
+      </header>
+
+      <section class="hero-panel">
+        <div class="hero-orb orb-one"></div>
+        <div class="hero-orb orb-two"></div>
+        <div class="hero-content">
+          <div class="hero-kicker"><span class="live-pulse"></span> FOCUS MODE</div>
+          <h3>一次准备，<br /><em>同时开始。</em></h3>
+          <p>把多个课程放进同一块工作台，在不同学习任务之间快速切换。</p>
+          <div class="hero-stats">
+            <div><strong id="total-courses">—</strong><span>课程总数</span></div>
+            <div><strong id="total-hours">—</strong><span>预计学习时长</span></div>
+            <div><strong id="parallel-limit">4</strong><span>当前并行窗口</span></div>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-window back-window"><span></span><span></span><span></span></div>
+          <div class="art-window front-window"><span></span><span></span><span></span><b></b><i></i><i></i><i></i></div>
+          <div class="art-ring"></div>
+        </div>
+      </section>
+
+      <section class="workspace-section">
+        <div class="workspace-heading">
+          <div>
+            <div class="heading-row">
+              <h3>学习窗口</h3><span class="active-tag" id="active-tag">未选择课程</span>
+            </div>
+            <p class="muted">选择布局后，点击左侧课程即可填充窗口。</p>
+          </div>
+          <div class="workspace-controls">
+            <div class="layout-switcher" role="group" aria-label="窗口布局">
+              <button class="layout-button" data-layout="1" type="button"><span
+                  class="layout-icon one-up"></span>单开</button>
+              <button class="layout-button active" data-layout="4" type="button"><span
+                  class="layout-icon four-up"></span>四开</button>
+              <button class="layout-button" data-layout="8" type="button"><span
+                  class="layout-icon eight-up"></span>八开</button>
+            </div>
+            <div class="custom-layout" id="custom-layout">
+              <label for="custom-layout-input">自定义</label>
+              <input id="custom-layout-input" type="number" min="1" max="20" value="6" inputmode="numeric"
+                aria-label="自定义同时打开窗口数量" />
+              <span>开</span>
+              <button class="apply-custom-layout" id="apply-custom-layout" type="button" aria-label="应用自定义窗口数量"
+                title="应用自定义窗口数量">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m5 12 4 4L19 6" />
+                </svg>
+              </button>
+            </div>
+            <button class="clear-button" id="clear-button" type="button">清空窗口</button>
+          </div>
+        </div>
+
+        <div class="workspace-grid grid-4" id="workspace-grid">
+          <div class="empty-workspace">
+            <div class="empty-icon">＋</div><strong>选择课程开始</strong><span>课程页会在这里并行打开</span>
+          </div>
+        </div>
+        <p class="workspace-note"><span>⌘</span> 点击课程卡片即可添加 · 每个窗口都支持全屏操作</p>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js" defer></script>
+</body>
+
+</html>
